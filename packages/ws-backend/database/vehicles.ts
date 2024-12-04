@@ -24,6 +24,7 @@ export const vehicles: Vehicle[] = Array(1000).fill(null).map((_, index) => {
     lat: position[1],
     lng: position[0],
     battery: generateBatteryLevel(),
-    status: getRandomStatus(),
+    status: getRandomStatus(['DISABLED']),
   }
 });
+

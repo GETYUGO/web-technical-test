@@ -5,22 +5,22 @@ import type { Vehicle } from "../types/vehicle";
  */
 export const generateVehiclePlateNumber = () => (Math.random() + 1).toString(36).substring(7);
 
-export const getRandomStatus = (): Vehicle['status'] => {
+export const getRandomStatus = (blacklist?: Vehicle['status'][]): Vehicle['status'] => {
   const random = Math.random();
 
-  if (random > 0.95) {
+  if (random > 0.95 && !blacklist?.includes('DISABLED')) {
     return 'DISABLED';
   }
 
-  if (random > 0.85) {
+  if (random > 0.85 && !blacklist?.includes('MAINTENANCE')) {
     return 'MAINTENANCE';
   }
 
-  if (random > 0.1) {
+  if (random > 0.1 && !blacklist?.includes('AVAILABLE')) {
     return 'AVAILABLE';
   }
 
-  return 'BOOKED';
+  return 'AVAILABLE';
 }
 
 export const generateBatteryLevel = (previousBatteryLevel?: number) => {

@@ -1,7 +1,7 @@
 import { Server } from 'socket.io';
 import type { ClientToServerEvents, ServerToClientEvents } from './types/socket';
 import { generateBatteryLevel, getRandomStatus } from './libs/vehicle';
-import { getAllVehicles, updateVehicle } from './services/vehicles';
+import { getAllVehicles, removeVehicle, updateVehicle } from './services/vehicles';
 import { getRandomPosition } from './libs/position';
 
 console.log('Starting server...');
@@ -20,6 +20,24 @@ server.on('connection', (socket) => {
   socket.on('vehicle', (vehicle) => {
     updateVehicle(vehicle.id, vehicle);
   });
+
+  socket.on('book', (vehicleId) => {
+    const vehicle = getAllVehicles().find(v => v.id === vehicleId);
+
+    if (vehicle) {
+      vehicle.booked = {
+        socketId: socket.id
+      }
+    }
+  })
+
+  socket.on('unbook', (vehicleId) => {
+    const vehicle = getAllVehicles().find(v => v.id === vehicleId);
+
+    if (vehicle) {
+      vehicle.booked = undefined;
+    }
+  })
 
   /**
    * Simulates real world scenario by updating one vehicle every 150ms.
@@ -42,7 +60,7 @@ server.on('connection', (socket) => {
       }
 
       // Update the status of the vehicle in 50% of the cases.
-      if (Math.random() >= 0.5) {
+      if (Math.random() >= 0.5 && !vehicle.booked) {
         vehicle.status = getRandomStatus();
 
         updated = true;
@@ -62,6 +80,15 @@ server.on('connection', (socket) => {
   }, 100);
 
   socket.on('disconnect', () => {
+    const vehicles = getAllVehicles().filter(v => v.booked?.socketId === socket.id);
+
+    if (vehicles) {
+      for (const vehicle of vehicles) {
+        removeVehicle(vehicle.id);
+      }
+    }
+    
+
     console.log('A client disconnected');
   });
 });

@@ -7,4 +7,6 @@ export interface ServerToClientEvents {
 
 export interface ClientToServerEvents {
   vehicle: (vehicle: Omit<Vehicle, 'plate_number'>) => void;
+  book: (vehicleId: number) => void;
+  unbook: (vehicleId: number) => void;
 }

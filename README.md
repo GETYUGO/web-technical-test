@@ -66,9 +66,9 @@ Please find what we are going to review in your project :
 - The app should display our scooters on a map using Mapbox, represented by markers.
 - The app should handle connection and update from WS to an internal state,
 - The app should display an orange marker if the scooter status is available,
-- The app should display a black marker if the scooter status is booked,
 - The app should display a red marker if the scooter status is maintenance,
 - The app should NOT display a marker if the scooter status is disabled,
+- The app should display a black marker if the scooter has been booked,
 - The app should be able to let the user select a scooter and display the information of the scooter,
 - The app should display a responsive design following the guidelines provided in the Figma.
 
