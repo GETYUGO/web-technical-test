@@ -50,7 +50,6 @@ server.on('connection', (socket) => {
 
       // Update the battery of the vehicle in 70% of the cases.
       if (Math.random() >= 0.3) {
-        console.log('Updating battery', vehicle.battery, generateBatteryLevel(vehicle.battery));
         vehicle.battery = generateBatteryLevel(vehicle.battery);
 
         updated = true;

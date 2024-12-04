@@ -12,4 +12,4 @@ export const vehicleSchema = z.object({
   status: statusVehiclesSchema,
 })
 
-export type Vehicle = z.infer<typeof vehicleSchema>;
+export type Vehicle = z.infer<typeof vehicleSchema>
