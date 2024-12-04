@@ -21,21 +21,31 @@ server.on('connection', (socket) => {
     updateVehicle(vehicle.id, vehicle);
   });
 
-  socket.on('book', (vehicleId) => {
+  socket.on('book', async (vehicleId) => {
+    // Fake latency
+    await new Promise(resolve => setTimeout(resolve, 2500));
+
     const vehicle = getAllVehicles().find(v => v.id === vehicleId);
 
     if (vehicle) {
       vehicle.booked = {
         socketId: socket.id
       }
+      socket.emit('vehicle', vehicle);
     }
+
   })
 
-  socket.on('unbook', (vehicleId) => {
+  socket.on('unbook', async (vehicleId) => {
+    // Fake latency
+    await new Promise(resolve => setTimeout(resolve, 2500));
+
     const vehicle = getAllVehicles().find(v => v.id === vehicleId);
 
     if (vehicle) {
       vehicle.booked = undefined;
+
+      socket.emit('vehicle', vehicle);
     }
   })
 
